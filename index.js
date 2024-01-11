@@ -2,17 +2,18 @@ import express from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
 
+const app = express();
+const port = 3000;
+
+
 const db = new pg.Client({
   user: "postgres",
   host: "localhost",
   database: "world",
-  password: "123456",
+  password: "12345",
   port: 5432,
 })
 
-
-const app = express();
-const port = 3000;
 
 let totalCorrect = 0;
 
@@ -36,9 +37,9 @@ app.use(express.static("public"));
 let currentQuestion = {};
 
 // GET home page
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
   totalCorrect = 0;
-  nextQuestion();
+  await nextQuestion();
   console.log(currentQuestion);
   res.render("index.ejs", { question: currentQuestion });
 });
