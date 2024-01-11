@@ -16,6 +16,19 @@ const port = 3000;
 
 let totalCorrect = 0;
 
+db.connect();
+
+let quiz = [];
+
+db.query("SELECT * FROM flags", (err, res)=> {
+  if (err){
+    console.error("Error executing query", err.stack);
+  } else {
+    quiz = res.rows;
+  }
+  db.end();
+})
+
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
