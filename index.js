@@ -14,21 +14,9 @@ const db = new pg.Client({
   port: 5432,
 })
 
-
-let totalCorrect = 0;
-
 db.connect();
 
-let quiz = [];
-
-db.query("SELECT * FROM flags", (err, res)=> {
-  if (err){
-    console.error("Error executing query", err.stack);
-  } else {
-    quiz = res.rows;
-  }
-  db.end();
-})
+let totalCorrect = 0;
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -62,8 +50,9 @@ app.post("/submit", (req, res) => {
   });
 });
 
-function nextQuestion() {
+async function nextQuestion() {
   const randomCountry = quiz[Math.floor(Math.random() * quiz.length)];
+
   currentQuestion = randomCountry;
 }
 
